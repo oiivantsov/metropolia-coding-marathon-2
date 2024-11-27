@@ -23,8 +23,8 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: 'http://localhost:4000',
-        // target: 'https://metropolia-coding-marathon-2-backend.onrender.com',
+        // target: 'http://localhost:4000',
+        target: 'https://metropolia-coding-marathon-2-backend.onrender.com',
         changeOrigin: true,
       },
     },
