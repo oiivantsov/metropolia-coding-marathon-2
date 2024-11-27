@@ -7,6 +7,9 @@ const JobPage = ({ deleteJob }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const job = useLoaderData();
+  
+
+  console.log(job);
 
   const onDeleteClick = (jobId) => {
     const confirm = window.confirm(
@@ -112,8 +115,16 @@ const JobPage = ({ deleteJob }) => {
 };
 
 const jobLoader = async ({ params }) => {
-  const res = await fetch(`/api/jobs/${params.id}`);
+  const token = localStorage.getItem('token');
+  const res = await fetch(`/api/jobs/${params.id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    }
+  });
   const data = await res.json();
+  console.log(data);
   return data;
 };
 

@@ -9,6 +9,20 @@ const getJobs = async (req, res) => {
     res.status(200).json(jobs);
 };
 
+const getJobById = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const job = await Job.findById(id);
+      if (!job) {
+        return res.status(404).json({ error: "Job not found" });
+      }
+      res.status(200).json(job);
+    } catch (error) {
+      console.error("Error fetching job by ID:", error);
+      res.status(500).json({ error: "Server error" });
+    }
+  };
+
 const createJob = async (req, res) => {
         const newJob = await Job.new(req.body);
 
@@ -46,6 +60,7 @@ const deleteJob = async (req, res) => {
 
 module.exports = {
     getJobs,
+    getJobById,
     createJob,
     updateJob,
     deleteJob

@@ -5,12 +5,18 @@ import Spinner from './Spinner';
 const JobListings = ({ isHome = false }) => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('token'); // Retrieve the token from local storage
 
   useEffect(() => {
     const fetchJobs = async () => {
-      const apiUrl = isHome ? '/api/jobs?_limit=3' : '/api/jobs';
       try {
-        const res = await fetch(apiUrl);
+        const res = await fetch(`/api/jobs/`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          }
+        });
         const data = await res.json();
         setJobs(data);
       } catch (error) {
