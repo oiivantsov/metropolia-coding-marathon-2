@@ -8,8 +8,15 @@ const { unknownEndpoint,errorHandler } = require("./middleware/customMiddleware"
 const connectDB = require("./config/db");
 const cors = require("cors");
 
+// Configure CORS
+const corsOptions = {
+  origin: 'https://metropolia-coding-marathon-2.onrender.com', // deployed frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true, // Allow cookies
+};
+
 // Middlewares
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(morgan("dev"));
 

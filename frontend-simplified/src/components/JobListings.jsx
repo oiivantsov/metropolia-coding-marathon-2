@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import JobListing from './JobListing';
 import Spinner from './Spinner';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const JobListings = ({ isHome = false }) => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ const JobListings = ({ isHome = false }) => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch(`/api/jobs/`, {
+        const res = await fetch(`${API_BASE_URL}/api/jobs/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

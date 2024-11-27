@@ -15,12 +15,14 @@ import Signup from './components/SignupComponent';
 import Login from './components/LoginComponent';
 import ProtectedRoute from './components/ProtectedRoute';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const App = () => {
   const token = localStorage.getItem('token'); // Retrieve the token from local storage
 
   const addJob = async (newJob) => {
     try {
-      const res = await fetch('/api/jobs/create', {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +38,7 @@ const App = () => {
 
   const deleteJob = async (id) => {
     try {
-      const res = await fetch(`/api/jobs/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +53,7 @@ const App = () => {
 
   const updateJob = async (job) => {
     try {
-      const res = await fetch(`/api/jobs/${job.id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/jobs/${job.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
