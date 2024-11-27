@@ -3,28 +3,28 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
-} from "react-router-dom";
-import MainLayout from "./layouts/MainLayout";
-import HomePage from "./pages/HomePage";
-import JobsPage from "./pages/JobsPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import JobPage from "./pages/JobPage";
-import AddJobPage from "./pages/AddJobPage";
-import EditJobPage from "./pages/EditJobPage";
-import Signup from './components/SignUp';
-import Login from './components/Login';
-
-
+} from 'react-router-dom';
+import MainLayout from './layouts/MainLayout';
+import HomePage from './pages/HomePage';
+import JobsPage from './pages/JobsPage';
+import NotFoundPage from './pages/NotFoundPage';
+import JobPage, { jobLoader } from './pages/JobPage';
+import AddJobPage from './pages/AddJobPage';
+import EditJobPage from './pages/EditJobPage';
+import Signup from './components/SignupComponent';
+import Login from './components/LoginComponent';
 
 const App = () => {
-
   // Add New Job
+  const token = localStorage.getItem('token'); // Retrieve the token from local storage
+
   const addJob = async (newJob) => {
     try {
-      const res = await fetch('/api/jobs', {
+      const res = await fetch('/api/jobs/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(newJob),
       });
@@ -39,6 +39,10 @@ const App = () => {
     try {
       const res = await fetch(`/api/jobs/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
       });
       if (!res.ok) throw new Error('Failed to delete job');
     } catch (error) {
@@ -53,6 +57,7 @@ const App = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(job),
       });
@@ -62,49 +67,26 @@ const App = () => {
     }
   };
 
-  // Handle Signup
-  const signupSubmit = async (userData) => {
-    try {
-      const res = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-      if (!res.ok) throw new Error('Signup failed');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // Handle Login
-  const loginSubmit = async (credentials) => {
-    try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
-      if (!res.ok) throw new Error('Login failed');
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<MainLayout />}>
+      <Route path='/' element={<MainLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="/jobs" element={<JobsPage />} />
-        <Route path="/add-job" element={<AddJobPage />} />
-        <Route path='/signup' element={<Signup signupSubmit={signupSubmit} />} />
-        <Route path='/login' element={<Login loginSubmit={loginSubmit} />} />
-        <Route path="/edit-job/:id" element={<EditJobPage />} />
-        <Route path="/jobs/:id" element={<JobPage />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path='/jobs' element={<JobsPage />} />
+        <Route path='/add-job' element={<AddJobPage addJobSubmit={addJob} />} />
+        <Route
+          path='/edit-job/:id'
+          element={<EditJobPage updateJobSubmit={updateJob} />}
+          loader={jobLoader}
+        />
+        <Route
+          path='/jobs/:id'
+          element={<JobPage deleteJob={deleteJob} />}
+          loader={jobLoader}
+        />
+        <Route path='*' element={<NotFoundPage />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/login' element={<Login />} />
       </Route>
     )
   );
