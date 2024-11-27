@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const useSignup = () => {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -33,7 +35,7 @@ export const useSignup = () => {
     };
 
     try {
-      const response = await fetch('/api/users/signup', {
+      const response = await fetch(`${API_BASE_URL}/api/users/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
