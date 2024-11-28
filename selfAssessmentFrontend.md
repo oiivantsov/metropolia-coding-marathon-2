@@ -1,11 +1,11 @@
-# **Self-Assessment, Oleg**
+# **Self-Assessment, Frontend**
 
 ---
 
 ## **Problem 1: Missing Backend Endpoint for `jobLoader`**
 
 ### **Initial Issue:**  
-I implemented the `jobLoader` function to fetch job details by ID:
+We implemented the `jobLoader` function to fetch job details by ID:
 
 ```javascript
 const jobLoader = async ({ params }) => {
@@ -26,7 +26,7 @@ const jobLoader = async ({ params }) => {
 ```
 
 ### **Solution:** 
-I reviewed the backend code and added the missing route for `getJobById`:
+We reviewed the backend code and added the missing route for `getJobById`:
 
 ```javascript
 // Backend route to get a job by ID
@@ -44,7 +44,7 @@ router.get("/:id", requireAuth, getJobById);
 Initially, our application had protected routes to secure certain pages (e.g., `/jobs` and `/add-job`). However, the implementation relied solely on the presence of a token. This led to an issue where a valid token existed, but the user was unauthorized, causing the page to fail and throw errors.
 
 ### **Solution:** 
-I introduced a `ProtectedRoute` component to manage access and redirect unauthorized users to the login page. Here’s the implementation:
+We introduced a `ProtectedRoute` component to manage access and redirect unauthorized users to the login page. Here’s the implementation:
 
 ```javascript
 import { Navigate } from 'react-router-dom';
@@ -62,7 +62,7 @@ const ProtectedRoute = ({ children }) => {
 export default ProtectedRoute;
 ```
 
-I updated the routing configuration to wrap secure pages with `ProtectedRoute`:
+We updated the routing configuration to wrap secure pages with `ProtectedRoute`:
 
 ```javascript
 const router = createBrowserRouter(
@@ -102,9 +102,9 @@ const router = createBrowserRouter(
 3. **Modularity**: Encapsulating the protection logic in a reusable component simplifies routing and improves code maintainability.
 
 ## **Summary**
-Through these fixes, I improved the reliability and user experience of the application:
+Through these fixes, we improved the reliability and user experience of the application:
 
 - Resolved a critical backend/frontend mismatch by implementing the missing backend endpoint for fetching jobs by ID.
 - Enhanced the security and usability of protected routes by redirecting unauthorized users to the login page with a clean and reusable `ProtectedRoute` component.
 
-Both solutions reflect my ability to debug effectively, coordinate between backend and frontend, and design modular, maintainable code.
+Both solutions reflect our ability to debug effectively, coordinate between backend and frontend, and design modular, maintainable code.
